@@ -1,0 +1,23 @@
+[
+    {
+      "id": 1,
+      "name": "Héctor",
+      "surname": "Guevara",
+      "phone": "7742-3461",
+      "favorite": false
+    },
+    {
+      "id": 2,
+      "name": "Leo",
+      "surname": "Messi",
+      "phone": "3233-5665",
+      "favorite": true
+    },
+    {
+      "id": 3,
+      "name": "Douglas",
+      "surname": "Mejía",
+      "phone": "2525-2626",
+      "favorite": false
+    }
+  ]
