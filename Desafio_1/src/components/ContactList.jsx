@@ -5,6 +5,7 @@ import contactsData from '../data/contacts.json';
 const ContactList = () => {
   const [contacts, setContacts] = useState([]);
   const [newContact, setNewContact] = useState({ name: '', surname: '', phone: '' });
+  const [error, setError] = useState(''); // Estado para el mensaje de error
 
   useEffect(() => {
     setContacts(contactsData);
@@ -12,7 +13,16 @@ const ContactList = () => {
 
   const addContact = (e) => {
     e.preventDefault();
-    if (!newContact.name || !newContact.surname || !newContact.phone) return;
+
+    if (!newContact.name || !newContact.surname || !newContact.phone) {
+      setError('Todos los campos son obligatorios.');
+      return;
+    }
+
+    if (!/^\d+$/.test(newContact.phone)) {
+      setError('El teléfono solo puede contener números.');
+      return;
+    }
 
     const newEntry = {
       id: Date.now(),
@@ -22,13 +32,14 @@ const ContactList = () => {
 
     setContacts([...contacts, newEntry]);
     setNewContact({ name: '', surname: '', phone: '' });
+    setError(''); 
   };
 
   const deleteContact = (id) => {
     setContacts(contacts.filter(contact => contact.id !== id));
   };
 
-  const toggleFavorite = (id) => {
+  const selecFavorito = (id) => {
     setContacts(contacts.map(contact =>
       contact.id === id ? { ...contact, favorite: !contact.favorite } : contact
     ));
@@ -56,11 +67,17 @@ const ContactList = () => {
           type="text"
           placeholder="Teléfono"
           value={newContact.phone}
-          onChange={(e) => setNewContact({ ...newContact, phone: e.target.value })}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d*$/.test(value)) {
+              setNewContact({ ...newContact, phone: value });
+            }
+          }}
           style={{ marginBottom: '10px' }}
         />
         <button type="submit">Agregar Contacto</button>
       </form>
+      {error && <p style={{ color: 'red' }}>{error}</p>} {}
       {contacts
         .sort((a, b) => b.favorite - a.favorite)
         .map(contact => (
@@ -68,7 +85,7 @@ const ContactList = () => {
             key={contact.id}
             contact={contact}
             onDelete={deleteContact}
-            onToggleFavorite={toggleFavorite}
+            selecFavorito={selecFavorito}
           />
         ))}
     </div>

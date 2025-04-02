@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Contact = ({ contact, onDelete, onToggleFavorite }) => {
+const Contact = ({ contact, onDelete, selecFavorito }) => {
   return (
     <div
       style={{
@@ -26,7 +26,7 @@ const Contact = ({ contact, onDelete, onToggleFavorite }) => {
       </div>
       <div>
         <button
-          onClick={() => onToggleFavorite(contact.id)}
+          onClick={() => selecFavorito(contact.id)}
           style={{
             backgroundColor: contact.favorite ? '#ffc107' : 'gray',
             color: 'black',
