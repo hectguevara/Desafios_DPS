@@ -1,54 +1,54 @@
 import React, { useState } from 'react';
 import { View, FlatList, Text, StyleSheet } from 'react-native';
-import PieceForm from '../components/PieceForm';
-import PieceItem from '../components/PieceItem';
-import PieceModal from '../components/PieceModal';
-import colors from '../utils/colors';
+import FormularioPieza from '../components/FormularioPieza';
+import PiezaItem from '../components/PiezaItem';
+import ModalPieza from '../components/ModalPieza';
+import colores from '../utils/colors';
 
 const HomeScreen = () => {
-  const [pieces, setPieces] = useState([]);
-  const [selectedPiece, setSelectedPiece] = useState(null);
+  const [piezas, setPiezas] = useState([]);
+  const [piezaSeleccionada, setPiezaSeleccionada] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const addPiece = (piece) => {
-    const updated = [...pieces, piece].sort((a, b) => new Date(b.date) - new Date(a.date));
-    setPieces(updated);
+  const agregarPieza = (pieza) => {
+    const actualizadas = [...piezas, pieza].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    setPiezas(actualizadas);
   };
 
-  const deletePiece = (id) => {
-    setPieces(pieces.filter(p => p.id !== id));
+  const eliminarPieza = (id) => {
+    setPiezas(piezas.filter(p => p.id !== id));
   };
 
-  const openModal = (piece) => {
-    setSelectedPiece(piece);
+  const abrirModal = (pieza) => {
+    setPiezaSeleccionada(pieza);
     setModalVisible(true);
   };
 
   return (
-    <View style={styles.container}>
-      <PieceForm onAddPiece={addPiece} />
+    <View style={estilos.contenedor}>
+      <FormularioPieza onAgregarPieza={agregarPieza} />
       <FlatList
-        data={pieces}
+        data={piezas}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <PieceItem piece={item} onDelete={deletePiece} onPress={() => openModal(item)} />
+          <PiezaItem pieza={item} onEliminar={eliminarPieza} onPresionar={() => abrirModal(item)} />
         )}
         ListEmptyComponent={
-          <Text style={styles.emptyText}>No hay ninguna pieza, agregue una.</Text>
+          <Text style={estilos.textoVacio}>No hay ninguna pieza, agregue una.</Text>
         }
       />
-      <PieceModal visible={modalVisible} piece={selectedPiece} onClose={() => setModalVisible(false)} />
+      <ModalPieza visible={modalVisible} pieza={piezaSeleccionada} onCerrar={() => setModalVisible(false)} />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10 },
-  emptyText: {
+const estilos = StyleSheet.create({
+  contenedor: { flex: 1, padding: 10 },
+  textoVacio: {
     textAlign: 'center',
     marginTop: 20,
     fontSize: 16,
-    color: colors.black,
+    color: colores.negro,
     fontStyle: 'italic'
   }
 });
