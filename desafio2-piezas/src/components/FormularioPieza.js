@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Platform, Pressable, Text } from 'react-native';
+import {
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Platform,
+  Pressable,
+  Text,
+} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import colores from '../utils/colors';
@@ -12,6 +20,14 @@ const FormularioPieza = ({ onAgregarPieza }) => {
   const [fecha, setFecha] = useState(null);
   const [mostrarPicker, setMostrarPicker] = useState(false);
 
+  // ✅ Nueva función para evitar problemas de desfase por zona horaria
+  const formatearFechaLocal = (fecha) => {
+    const anio = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    return `${anio}-${mes}-${dia}`;
+  };
+
   const manejarEnvio = () => {
     if (tipo && marca && serie && precio && fecha) {
       onAgregarPieza({
@@ -20,9 +36,8 @@ const FormularioPieza = ({ onAgregarPieza }) => {
         marca,
         serie,
         precio,
-        fecha: fecha.toISOString().split('T')[0] 
+        fecha: formatearFechaLocal(fecha),
       });
-      // Limpiar formulario
       setTipo('');
       setMarca('');
       setSerie('');
@@ -49,13 +64,29 @@ const FormularioPieza = ({ onAgregarPieza }) => {
         <Picker.Item label="Batería" value="Batería" />
       </Picker>
 
-      <TextInput placeholder="Marca" value={marca} onChangeText={setMarca} style={estilos.entrada} />
-      <TextInput placeholder="Número de Serie" value={serie} onChangeText={setSerie} style={estilos.entrada} />
-      <TextInput placeholder="Precio" value={precio} onChangeText={setPrecio} keyboardType="numeric" style={estilos.entrada} />
+      <TextInput
+        placeholder="Marca"
+        value={marca}
+        onChangeText={setMarca}
+        style={estilos.entrada}
+      />
+      <TextInput
+        placeholder="Número de Serie"
+        value={serie}
+        onChangeText={setSerie}
+        style={estilos.entrada}
+      />
+      <TextInput
+        placeholder="Precio"
+        value={precio}
+        onChangeText={setPrecio}
+        keyboardType="numeric"
+        style={estilos.entrada}
+      />
 
       <Pressable onPress={mostrarFechaPicker} style={estilos.selectorFecha}>
         <Text style={fecha ? estilos.textoFecha : estilos.textoFechaPlaceholder}>
-          {fecha ? fecha.toISOString().split('T')[0] : 'Seleccionar fecha de cambio'}
+          {fecha ? formatearFechaLocal(fecha) : 'Seleccionar fecha de cambio'}
         </Text>
       </Pressable>
 
@@ -80,17 +111,17 @@ const estilos = StyleSheet.create({
     marginVertical: 5,
     padding: 8,
     borderRadius: 5,
-    backgroundColor: colores.blanco
+    backgroundColor: colores.blanco,
   },
   selectorFecha: {
     padding: 10,
     backgroundColor: colores.blanco,
     borderRadius: 5,
     borderWidth: 1,
-    marginBottom: 10
+    marginBottom: 10,
   },
   textoFecha: { color: colores.negro },
-  textoFechaPlaceholder: { color: '#888' }
+  textoFechaPlaceholder: { color: '#888' },
 });
 
 export default FormularioPieza;
