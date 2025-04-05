@@ -20,7 +20,7 @@ const FormularioPieza = ({ onAgregarPieza }) => {
   const [fecha, setFecha] = useState(null);
   const [mostrarPicker, setMostrarPicker] = useState(false);
 
-  // ✅ Nueva función para evitar problemas de desfase por zona horaria
+  // Desafase zona horaria
   const formatearFechaLocal = (fecha) => {
     const anio = fecha.getFullYear();
     const mes = String(fecha.getMonth() + 1).padStart(2, '0');
