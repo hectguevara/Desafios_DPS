@@ -20,8 +20,8 @@ const FormularioPieza = ({ onAgregarPieza }) => {
   const [fecha, setFecha] = useState(null);
   const [mostrarPicker, setMostrarPicker] = useState(false);
 
-  // Desafase zona horaria
-  const formatearFechaLocal = (fecha) => {
+  const formatearFechaLocal = (f) => {
+    const fecha = new Date(f);
     const anio = fecha.getFullYear();
     const mes = String(fecha.getMonth() + 1).padStart(2, '0');
     const dia = String(fecha.getDate()).padStart(2, '0');
@@ -36,7 +36,7 @@ const FormularioPieza = ({ onAgregarPieza }) => {
         marca,
         serie,
         precio,
-        fecha: formatearFechaLocal(fecha),
+        fecha: formatearFechaLocal(new Date(fecha)),
       });
       setTipo('');
       setMarca('');
@@ -50,7 +50,7 @@ const FormularioPieza = ({ onAgregarPieza }) => {
     setMostrarPicker(true);
   };
 
-  const manejarCambioFecha = (event, fechaSeleccionada) => {
+  const manejarCambioFecha = (_, fechaSeleccionada) => {
     setMostrarPicker(Platform.OS === 'ios');
     if (fechaSeleccionada) setFecha(fechaSeleccionada);
   };
@@ -92,7 +92,7 @@ const FormularioPieza = ({ onAgregarPieza }) => {
 
       {mostrarPicker && (
         <DateTimePicker
-          value={fecha || new Date()}
+          value={fecha ? new Date(fecha) : new Date()}
           mode="date"
           display="default"
           onChange={manejarCambioFecha}
