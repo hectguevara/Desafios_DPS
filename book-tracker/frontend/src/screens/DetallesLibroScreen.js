@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   View, StyleSheet, ScrollView, Dimensions, Alert
 } from 'react-native';
-import { TextInput, Button, Title, Text } from 'react-native-paper';
+import { TextInput, Button, Title, Text, useTheme } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import API_URL from '../utils/api';
 import { getToken } from '../utils/auth';
@@ -100,7 +100,12 @@ const DetallesLibroScreen = ({ route, navigation }) => {
           <Picker.Item label="Completado" value="completado" />
         </Picker>
 
-        <Button mode="outlined" onPress={() => setMostrarInicio(true)} style={styles.buttonOutline}>
+        <Button
+          mode="outlined"
+          onPress={() => setMostrarInicio(true)}
+          style={styles.buttonOutline}
+          textColor="#ffa94d"
+        >
           Seleccionar Fecha de Inicio
         </Button>
         {fechaInicio && (
@@ -118,7 +123,12 @@ const DetallesLibroScreen = ({ route, navigation }) => {
           onCancel={() => setMostrarInicio(false)}
         />
 
-        <Button mode="outlined" onPress={() => setMostrarFin(true)} style={styles.buttonOutline}>
+        <Button
+          mode="outlined"
+          onPress={() => setMostrarFin(true)}
+          style={styles.buttonOutline}
+          textColor="#ffa94d"
+        >
           Seleccionar Fecha de Fin
         </Button>
         {fechaFin && (
@@ -160,10 +170,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width,
     height,
-    backgroundColor: '#111'
+    backgroundColor: '#333' // gris medio
   },
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     padding: 20,
     margin: 20,
     borderRadius: 10
@@ -193,10 +203,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff6200'
   },
   buttonOutline: {
-    marginTop: 10
+    marginTop: 10,
+    borderColor: '#ffa94d'
   },
   dateLabel: {
-    color: 'white',
+    color: '#ffa94d',
     marginBottom: 5
   }
 });
